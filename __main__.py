@@ -27,12 +27,41 @@ async def on_ready():
     await dodoBot.change_presence(activity=dodoBot.game)
         #################
 
-
-
-
+        ###### COG ######
 dodoBot.add_cog(command.theCommands(dodoBot))
 dodoBot.add_cog(event.theEvent(dodoBot))
-
+        #################
 
 dodoBot.run(Token)
 
+
+
+'''
+                             (%.                         
+                             ((((((                     
+                             ((  . ,(((,                 
+                             ((          ((%             
+                             ((               ((         
+                             ((                    /,    
+                             ((                         .
+                             ((                          
+                             ((                          
+                         ,(( ((                          
+                     %(((((( ((                          
+                .(((/     (( ((                         #
+            *((,          (( ((                    (,    
+        %(                (( ((               ((         
+    (                     (( ((         .((%             
+                          (( ((  . /(((,                 
+                          (( ((((((                      
+                          (( (%                          
+                          ((                            
+                          ((                            
+                          ((                            
+    %*                    ((                            
+        *((               ((                            
+             (((          ((                            
+               . %(((. .  ((                            
+                     *((((((                            
+                          ((                  
+'''

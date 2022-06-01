@@ -35,3 +35,44 @@ class theEvent(commands.Cog):
                 await message.author.send("Alors comme sa tu veux des message dans t'es DM ;)")
             elif message.content.lower()[0:3]=='mia':
                 await message.channel.send('Miaaaaa \nhttps://tenor.com/view/kawaii-cute-peach-cat-gif-23743858')
+
+        
+    @commands.Cog.listener()   
+    async def on_message_edit(self,before,after):
+        if str(before.author) == "dodo's BOT#2997":
+            pass
+        else:
+            await after.channel.send(f'''Notre petit {after.author} a modifier son message :scream:
+            Ancien message ==> {before.content.lower()} <==Ancien message''')
+
+
+
+'''
+                             (%.                         
+                             ((((((                     
+                             ((  . ,(((,                 
+                             ((          ((%             
+                             ((               ((         
+                             ((                    /,    
+                             ((                         .
+                             ((                          
+                             ((                          
+                         ,(( ((                          
+                     %(((((( ((                          
+                .(((/     (( ((                         #
+            *((,          (( ((                    (,    
+        %(                (( ((               ((         
+    (                     (( ((         .((%             
+                          (( ((  . /(((,                 
+                          (( ((((((                      
+                          (( (%                          
+                          ((                            
+                          ((                            
+                          ((                            
+    %*                    ((                            
+        *((               ((                            
+             (((          ((                            
+               . %(((. .  ((                            
+                     *((((((                            
+                          ((                  
+'''
