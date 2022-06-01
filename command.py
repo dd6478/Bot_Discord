@@ -5,13 +5,17 @@
         #####dd64#####
          ############ 
 
+from contextlib import AsyncExitStack
 import discord, time, random
 from discord.ext import commands
+import requests
+
+def setup(bot):
+    bot.add_cog(theCommands(bot))
 
 class theCommands(commands.Cog):
     def __init__(self, bot):
         self.bot=bot
-
 
     @commands.command()
     async def _help(ctx):
@@ -80,6 +84,29 @@ class theCommands(commands.Cog):
                 await ctx.channel.send(f"il y a trop de compatibilité entre {A} et {B}")
             else:
                 await ctx.channel.send(f"il y a {random.randint(0,100)}% de compatibilité entre {A} et {B}")
+
+    @commands.command()
+    async def cat(self,ctx):
+        try:
+            url = 'https://aws.random.cat/meow'
+            r = requests.get(url)
+            data = r.json()
+            print(f'###### {data["file"]} ######')
+            await ctx.channel.send(data['file'])
+        except:
+            await ctx.channel.send("Une erreur est survenue")
+        
+    @commands.command()
+    async def dog(self,ctx):
+        try:
+            url = 'https://random.dog/woof.json'
+            r = requests.get(url)
+            data = r.json()
+            print(f'###### {data["url"]} ######')
+            await ctx.channel.send(data['url'])
+        except:
+            await ctx.channel.send("Une erreur est survenue")
+
 
 '''
 @bot.command(name='send')

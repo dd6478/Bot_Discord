@@ -8,13 +8,16 @@
 import discord, random
 from discord.ext import commands
 
+def setup(bot):
+    bot.add_cog(theEvent(bot))
+
 class theEvent(commands.Cog):
     def __init__(self, bot):
         self.bot=bot
 
     @commands.Cog.listener()
     async def on_message(self, message):
-        await self.bot.process_commands(message)
+        #await self.bot.process_commands(message)
         print(message.author)
         if str(message.author) == "dodo's BOT#2997":
             pass

@@ -28,11 +28,28 @@ async def on_ready():
         #################
 
         ###### COG ######
-dodoBot.add_cog(command.theCommands(dodoBot))
-dodoBot.add_cog(event.theEvent(dodoBot))
+@dodoBot.command()
+async def load(ctx, extension):
+    try:
+        dodoBot.load_extension(extension)
+        await ctx.send(f'{extension} loaded')
+    except Exception as error:
+        await ctx.send(f'{extension} can\'t be loaded. [{error}]')
+
+@dodoBot.command()
+async def unload(ctx, extension):
+    try:
+        dodoBot.unload_extension(extension)
+        await ctx.send(f'{extension} unloaded')
+    except Exception as error:
+        await ctx.send(f'{extension} can\'t be unloaded. [{error}]')
         #################
 
+
+
 dodoBot.run(Token)
+
+
 
 
 
