@@ -5,7 +5,8 @@ Created on Mon Apr 25 15:31:44 2022
 
 @author: baby-ghost
 """
-Token = 'OTY4MTM5OTAwMjc0NzQ5NDUy.Ymagiw.Mc3hrzANeECE030VZy-Wd4afRWM'
+with open('TOKEN', 'r') as file:
+    Token=file.read()
 import discord
 import random
 import os
