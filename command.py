@@ -5,8 +5,7 @@
         #####dd64#####
          ############ 
 
-from contextlib import AsyncExitStack
-import discord, time, random
+import discord, random, asyncio
 from discord.ext import commands
 import requests
 
@@ -27,11 +26,11 @@ class theCommands(commands.Cog):
         pos=["Face","Pile"]
         myAnswer=random.randint(0, 1)
         await ctx.channel.send('Ok I flip the coin')
-        time.sleep(2)
+        await asyncio.sleep(2)
         await ctx.channel.send('WOW elle est longue a retomber ...')
-        time.sleep(1)
+        await asyncio.sleep(1)
         await ctx.channel.send('AH! elle arrive')
-        time.sleep(1)
+        await asyncio.sleep(1)
         await ctx.channel.send(f"Hop je l'ai récup\nelle est tomber sur {pos[myAnswer]}")
 
 
