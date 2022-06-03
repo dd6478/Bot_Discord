@@ -9,7 +9,7 @@ import discord, random, os, time, command, event
 from discord.ext import commands
 
         ##### TOKEN #####
-with open('/home/baby-ghost/Bureau/BotDiscord/TOKEN', 'r') as file:
+with open('TOKEN', 'r') as file:
     Token=file.read()
     file.close()
         #################
@@ -21,7 +21,7 @@ dodoBot.remove_command('help')
         ##### Ready #####
 @dodoBot.event
 async def on_ready():
-    with open('/home/baby-ghost/Bureau/BotDiscord/PID','w') as pidFile:
+    with open('PID','w') as pidFile:
         pidFile.write(f'##### my PID is {os.getpid()} #####')
         pidFile.close()
     await dodoBot.change_presence(activity=dodoBot.game)

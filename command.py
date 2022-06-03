@@ -69,6 +69,14 @@ class theCommands(commands.Cog):
                 await ctx.channel.send("YES j'ai gagné")
             else:
                 await ctx.channel.send("Bon bas egalité")
+    
+    @commands.command()
+    async def mercimek(self, ctx):
+        try :
+            await ctx.message.delete()
+        except:
+            pass
+        await ctx.channel.send("https://cdn.discordapp.com/attachments/766684889104777266/981983304729378897/front_fr.10.full.jpg")
 
     @commands.command()
     async def love(self,ctx,*,message):
@@ -86,9 +94,10 @@ class theCommands(commands.Cog):
 
     @commands.command()
     async def cat(self,ctx):
+        #api for a randome cat
         try:
             url = 'https://aws.random.cat/meow'
-            r = requests.get(url)
+            r = requests.get(url)   
             data = r.json()
             print(f'###### {data["file"]} ######')
             await ctx.channel.send(data['file'])
