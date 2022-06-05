@@ -22,11 +22,12 @@ dodoBot.remove_command('help')
 @dodoBot.event
 async def on_ready():
     with open('PID','w') as pidFile:
-        pidFile.write(f'##### my PID is {os.getpid()} #####')
+        pidFile.write(f'##### my PID is {os.getpid()} #####') 
         pidFile.close()
     await dodoBot.change_presence(activity=dodoBot.game)
     dodoBot.load_extension('command')
     dodoBot.load_extension('event')
+    dodoBot.load_extension('save')
         #################
 
 def isOwner(ctx):

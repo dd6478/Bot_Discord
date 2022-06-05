@@ -17,8 +17,23 @@ class theCommands(commands.Cog):
         self.bot=bot
 
     @commands.command()
-    async def _help(ctx):
-        await ctx.channel.send("Il y a 3 commande disponible :\n\t-!PFC\n\t-!flip\n\t-!love\nAmuse toi bien")
+    async def help(self, ctx):
+        await ctx.channel.send('''
+        
+**!help** : show this message lol
+**!flip** : flip a coin
+**!love** : show the love between 2 people :3 (use *!love help* for more information)
+**pfc** : it's Rock-Paper-Scissors game (use *!pfc help* for more information)
+**!mercimek** : for say thanks to a person 
+**!cat or !dog** : show a random picture of a cat or dog
+
+***Save file***
+    **!create** : create a new save file
+    **!add** : add a new saveLine in file
+    **!delete** : delete a saveLine in file
+    **!list** : list all saveLine in file
+        
+                               ''')
 
 
     @commands.command()
@@ -35,13 +50,13 @@ class theCommands(commands.Cog):
 
 
     @commands.command()
-    async def PFC(self, ctx,*,message='none'):
+    async def pfc(self, ctx,*,message='none'):
         pos=["pierre","feuille","ciseaux"]
         myAnswer=random.randint(0, 2)
         if message=='none':
-            await ctx.channel.send("Tu na rien mis apres la commande.\nSi tu a besoin d'aide tape !PFC help.")
+            await ctx.channel.send("Tu na rien mis apres la commande.\nSi tu a besoin d'aide tape !pfc help.")
         elif message=='help':
-            await ctx.channel.send("Hey\nTu a 3 possibilité soit pierre soit feuille soit ciseaux.\nExemple : !PFC ciseaux")
+            await ctx.channel.send("Hey\nTu a 3 possibilité soit pierre soit feuille soit ciseaux.\nExemple : !pfc ciseaux")
             
         elif message.lower()=='ciseaux':
             await ctx.channel.send(f"Moi je dit {pos[myAnswer]}")
@@ -77,6 +92,14 @@ class theCommands(commands.Cog):
         except:
             pass
         await ctx.channel.send("https://cdn.discordapp.com/attachments/766684889104777266/981983304729378897/front_fr.10.full.jpg")
+        
+    @commands.command()
+    async def hehehehaw(self, ctx):
+        try:
+            ctx.message.delete()
+        except:
+            pass
+        await ctx.send("https://tenor.com/view/clash-royale-clash-royale-emote-gif-23858585")
 
     @commands.command()
     async def love(self,ctx,*,message):
