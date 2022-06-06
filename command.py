@@ -31,8 +31,8 @@ class theCommands(commands.Cog):
     **!create** : create a new save file
     **!add** : add a new saveLine in file
     **!delete** : delete a saveLine in file
+    **!take** : take a saveLine in file
     **!list** : list all saveLine in file
-        
                                ''')
 
 
