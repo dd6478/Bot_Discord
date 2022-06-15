@@ -122,7 +122,6 @@ class theCommands(commands.Cog):
             url = 'https://aws.random.cat/meow'
             r = requests.get(url)   
             data = r.json()
-            print(f'###### {data["file"]} ######')
             await ctx.channel.send(data['file'])
         except:
             await ctx.channel.send("Une erreur est survenue")
@@ -133,7 +132,6 @@ class theCommands(commands.Cog):
             url = 'https://random.dog/woof.json'
             r = requests.get(url)
             data = r.json()
-            print(f'###### {data["url"]} ######')
             await ctx.channel.send(data['url'])
         except:
             await ctx.channel.send("Une erreur est survenue")
