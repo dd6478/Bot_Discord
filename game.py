@@ -5,9 +5,6 @@
         #####dd64#####
          ############ 
          
-from codecs import utf_16_be_decode
-from re import L
-from tkinter import W
 import discord, random, asyncio
 from discord.ext import commands
 
