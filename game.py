@@ -17,7 +17,7 @@ class gameBot(commands.Cog):
         self.bot=bot
         
     def Word(self):
-        with open('wordList', 'r') as file:
+        with open('Bot_Discord/wordList', 'r') as file:
             word=file.readlines()
             file.close()
         return word[random.randint(0,len(word)-1)].strip()
