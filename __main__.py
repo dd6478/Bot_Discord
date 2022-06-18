@@ -14,7 +14,7 @@ with open('TOKEN', 'r') as file:
     file.close()
         #################
 
-dodoBot=commands.Bot(command_prefix='!', description='Bot by dd64')
+dodoBot=commands.Bot(command_prefix='*', description='Bot by dd64')
 dodoBot.game=discord.Game(name="Spam :3")
 dodoBot.remove_command('help')
 
@@ -29,6 +29,7 @@ async def on_ready():
     dodoBot.load_extension('event')
     dodoBot.load_extension('save')
     dodoBot.load_extension('game')
+    dodoBot.load_extension('wakeUp')
         #################
 
 def isOwner(ctx):

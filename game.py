@@ -1,5 +1,3 @@
-# coding: utf-8
-
          ############
         ######by######
         #####dd64#####
@@ -70,6 +68,7 @@ class gameBot(commands.Cog):
                         await ctx.send(f'Dommage !\nLe mot à trouver est : {self.printWord(WORD, Letter)}\nIl vous reste {Life} vies\nLettre mauvaise dite : {notGoodLetter}')
         await ctx.send(f"Vous n'avez plus de vies :(\nLe mot à trouver était : {WORD}")
         return
+    
     
 '''    
 with open('Achanger', 'r', encoding='latin2') as file:
