@@ -26,7 +26,7 @@ class wakeBot(commands.Cog):
                 line = file.readlines()
                 try:
                     send_magic_packet(line[1].strip(), ip_address=line[2].strip(), port=int(line[3].strip()))
-                    ctx.send('the packet has been sent\nEnjoy')
+                    await ctx.send('the packet has been sent\nEnjoy')
                 except:
                     await ctx.send('**ERROR** : the packet couldn\'t be sent')
         else:
