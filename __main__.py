@@ -28,6 +28,7 @@ async def on_ready():
     dodoBot.load_extension('command')
     dodoBot.load_extension('event')
     dodoBot.load_extension('save')
+    dodoBot.load_extension('game')
         #################
 
 def isOwner(ctx):
