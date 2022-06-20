@@ -4,7 +4,7 @@
 
 * **\*help** : show this message lol  
 * **\*flip** : flip a coin  
-* **\*love** : show the love between 2 people :3 (use *!love help* for more information)  
+* **\*love** : show the love between 2 people :3 (use *\*love help* for more information)  
 * **\*mercimek** : for say thanks to a person  
 * **\*cat or \*dog** : show a random picture of a cat or dog  
 * **\*wakeup** : wake up your computer with WakeOnWan
@@ -12,7 +12,7 @@
 ## **GAME**
 
 * **\*pendu** : play a game of pendu  
-* **\*pfc** : it's Rock-Paper-Scissors game (use *!pfc help* for more information)  
+* **\*pfc** : it's Rock-Paper-Scissors game (use *\*pfc help* for more information)  
 
 ## ***Save file***
 
