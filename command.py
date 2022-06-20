@@ -20,22 +20,22 @@ class theCommands(commands.Cog):
     async def help(self, ctx):
         await ctx.channel.send('''
         
-**!help** : show this message lol
-**!flip** : flip a coin
-**!love** : show the love between 2 people :3 (use *!love help* for more information)
-**!pfc** : it's Rock-Paper-Scissors game (use *!pfc help* for more information)
-**!mercimek** : for say thanks to a person 
-**!cat or !dog** : show a random picture of a cat or dog
+***help** : show this message lol
+***flip** : flip a coin
+***love** : show the love between 2 people :3 (use **love help* for more information)
+***pfc** : it's Rock-Paper-Scissors game (use **pfc help* for more information)
+***mercimek** : for say thanks to a person 
+***cat or *dog** : show a random picture of a cat or dog
 
 **GAME** :
-    **!pendu** : play a game of pendu
+    ***pendu** : play a game of pendu
 
 ***Save file***
-    **!create** : create a new save file
-    **!add** : add a new saveLine in file
-    **!delete** : delete a saveLine in file
-    **!take** : take a saveLine in file
-    **!list** : list all saveLine in file
+    ***create** : create a new save file
+    ***add** : add a new saveLine in file
+    ***delete** : delete a saveLine in file
+    ***take** : take a saveLine in file
+    ***list** : list all saveLine in file
                                ''')
 
 
@@ -47,7 +47,7 @@ class theCommands(commands.Cog):
         await asyncio.sleep(2)
         await ctx.channel.send('WOW elle est longue a retomber ...')
         await asyncio.sleep(1)
-        await ctx.channel.send('AH! elle arrive')
+        await ctx.channel.send('AH* elle arrive')
         await asyncio.sleep(1)
         await ctx.channel.send(f"Hop je l'ai récup\nelle est tomber sur {pos[myAnswer]}")
 
@@ -57,9 +57,9 @@ class theCommands(commands.Cog):
         pos=["pierre","feuille","ciseaux"]
         myAnswer=random.randint(0, 2)
         if message=='none':
-            await ctx.channel.send("Tu na rien mis apres la commande.\nSi tu a besoin d'aide tape !pfc help.")
+            await ctx.channel.send("Tu na rien mis apres la commande.\nSi tu a besoin d'aide tape *pfc help.")
         elif message=='help':
-            await ctx.channel.send("Hey\nTu a 3 possibilité soit pierre soit feuille soit ciseaux.\nExemple : !pfc ciseaux")
+            await ctx.channel.send("Hey\nTu a 3 possibilité soit pierre soit feuille soit ciseaux.\nExemple : *pfc ciseaux")
             
         elif message.lower()=='ciseaux':
             await ctx.channel.send(f"Moi je dit {pos[myAnswer]}")
@@ -107,7 +107,7 @@ class theCommands(commands.Cog):
     @commands.command()
     async def love(self,ctx,*,message):
         if message=='help':
-            await ctx.channel.send("Choisie 2 prenom pour determiner leurs taux de love\nExemple : !love dorian martial\n:3")
+            await ctx.channel.send("Choisie 2 prenom pour determiner leurs taux de love\nExemple : *love dorian martial\n:3")
         try:
             message.split()[2]
         except:

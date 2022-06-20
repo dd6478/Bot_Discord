@@ -1,9 +1,11 @@
+
+
          ############
         ######by######
         #####dd64#####
          ############ 
 
-import discord
+import discord, os
 from discord.ext import commands
 from pathlib import Path
 from wakeonlan import send_magic_packet
@@ -22,13 +24,16 @@ class wakeBot(commands.Cog):
             return m.author == ctx.message.author and m.channel == ctx.message.channel
         
         if Path(f'Player/{ctx.author.id}.wake').is_file():
-            with open(f'Player/{ctx.author.id}.wake', 'r') as file:
-                line = file.readlines()
-                try:
-                    send_magic_packet(line[1].strip(), ip_address=line[2].strip(), port=int(line[3].strip()))
-                    await ctx.send('the packet has been sent\nEnjoy')
-                except:
-                    await ctx.send('**ERROR** : the packet couldn\'t be sent')
+            if ctx.message.content == '!wakeup reset':
+                os.remove(f'Player/{ctx.author.id}.wake')
+            else:
+                with open(f'Player/{ctx.author.id}.wake', 'r') as file:
+                    line = file.readlines()
+                    try:
+                        send_magic_packet(line[1].strip(), ip_address=line[2].strip(), port=int(line[3].strip()))
+                        await ctx.send('the packet has been sent\nEnjoy')
+                    except:
+                        await ctx.send('**ERROR** : the packet couldn\'t be sent')
         else:
             await ctx.send('specify the mac adress\nYou are 60 seconds to respond')
             try :
@@ -52,7 +57,6 @@ class wakeBot(commands.Cog):
                 file.write(f'{ctx.author.id}-{ctx.author.name}\n{macAdress}\n{IPAdress}\n{Port}')
                 file.close()
             await ctx.send(f'Data saved\nMac address : {macAdress}\nIP address : {IPAdress}\nPort : {Port}')
-
 
 '''
                              (%.
