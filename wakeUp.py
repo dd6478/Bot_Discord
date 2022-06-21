@@ -24,8 +24,9 @@ class wakeBot(commands.Cog):
             return m.author == ctx.message.author and m.channel == ctx.message.channel
         
         if Path(f'Player/{ctx.author.id}.wake').is_file():
-            if ctx.message.content == '!wakeup reset':
+            if ctx.message.content == '*wakeup reset':
                 os.remove(f'Player/{ctx.author.id}.wake')
+                await ctx.send('Wakeup file reset')
             else:
                 with open(f'Player/{ctx.author.id}.wake', 'r') as file:
                     line = file.readlines()

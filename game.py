@@ -71,6 +71,40 @@ class gameBot(commands.Cog):
         await ctx.send(f"Vous n'avez plus de vies :(\nLe mot à trouver était : {WORD}")
         return
     
+    @commands.command()
+    async def pfc(self,ctx):
+        def check(message):
+            return message.channel == ctx.message.channel and message.author == ctx.message.author
+        
+        choose = ['pierre', 'feuille', 'ciseaux']
+        myAnswer = random.choice(choose)
+        await ctx.send('Jouons tous ensemble à un petit jeux !\nChoisi entre ***pierre***, ***feuille*** ou ***ciseaux***\nMoi j\'ai deja choisi')
+        try:
+            msg = await self.bot.wait_for('message', check=check, timeout=60)
+            msg = msg.content.lower()
+        except:
+            await ctx.send('Plus personne ne veux jouer :(\ntanpis!')
+            return
+        if msg == myAnswer:
+            await ctx.send(f'J\'ai aussi choisi **{myAnswer}**\nEgalité !')
+        elif msg not in choose:
+            await ctx.send('Ce n\'est pas un choix valide\nTu dois choisir entre pierre, feuille ou ciseaux\nRefait **\*pfc** pour recommencer*')
+        elif msg == choose[0]:
+            if myAnswer == choose[1]:
+                await ctx.send(f'J\'ai choisi **{myAnswer}**\nTu as perdu !')
+            else:
+                await ctx.send(f'J\'ai choisi **{myAnswer}**\nTu as gagné !')
+        elif msg == choose[1]:
+            if myAnswer == choose[2]:
+                await ctx.send(f'J\'ai choisi **{myAnswer}**\nTu as perdu !')
+            else:
+                await ctx.send(f'J\'ai choisi **{myAnswer}**\nTu as gagné !')
+        elif msg == choose[2]:
+            if myAnswer == choose[0]:
+                await ctx.send(f'J\'ai choisi **{myAnswer}**\nTu as perdu !')
+            else:
+                await ctx.send(f'J\'ai choisi **{myAnswer}**\nTu as gagné !')
+        return
     
 '''    
 with open('Achanger', 'r', encoding='latin2') as file:

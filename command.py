@@ -50,43 +50,6 @@ class theCommands(commands.Cog):
         await ctx.channel.send('AH* elle arrive')
         await asyncio.sleep(1)
         await ctx.channel.send(f"Hop je l'ai récup\nelle est tomber sur {pos[myAnswer]}")
-
-
-    @commands.command()
-    async def pfc(self, ctx,*,message='none'):
-        pos=["pierre","feuille","ciseaux"]
-        myAnswer=random.randint(0, 2)
-        if message=='none':
-            await ctx.channel.send("Tu na rien mis apres la commande.\nSi tu a besoin d'aide tape *pfc help.")
-        elif message=='help':
-            await ctx.channel.send("Hey\nTu a 3 possibilité soit pierre soit feuille soit ciseaux.\nExemple : *pfc ciseaux")
-            
-        elif message.lower()=='ciseaux':
-            await ctx.channel.send(f"Moi je dit {pos[myAnswer]}")
-            if myAnswer==1:
-                await ctx.channel.send("Mince j'ai perdu")
-            elif myAnswer==0:
-                await ctx.channel.send("YES j'ai gagné")
-            else:
-                await ctx.channel.send("Bon bas egalité")
-        
-        elif message.lower()=='feuille':
-            await ctx.channel.send(f"Moi je dit {pos[myAnswer]}")
-            if myAnswer==0:
-                await ctx.channel.send("Mince j'ai perdu")
-            elif myAnswer==2:
-                await ctx.channel.send("YES j'ai gagné")
-            else:
-                await ctx.channel.send("Bon bas egalité")
-            
-        elif message.lower()=='pierre':
-            await ctx.channel.send(f"Moi je dit {pos[myAnswer]}")
-            if myAnswer==2:
-                await ctx.channel.send("Mince j'ai perdu")
-            elif myAnswer==1:
-                await ctx.channel.send("YES j'ai gagné")
-            else:
-                await ctx.channel.send("Bon bas egalité")
     
     @commands.command()
     async def mercimek(self, ctx):
