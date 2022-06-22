@@ -30,6 +30,25 @@ class gameBot(commands.Cog):
             else:
                 str+='- '
         return str
+    
+    def createGrille(self):
+        grille=[]
+        for i in range(5):
+            grille.append(['*']*5)
+        return grille
+    
+    def afficherGrille(self, G):
+        str='```\n\ A B C D E /\n'
+        N=1 
+        for i in G:
+            str+=f'{N} '
+            for j in i:
+                str+=f'{j} '
+            str+=f'{N}\n'
+            N+=1
+        str+='/ A B C D E \ \n```'
+        return str
+        
                 
     @commands.command()
     async def pendu(self,ctx):
@@ -106,6 +125,63 @@ class gameBot(commands.Cog):
                 await ctx.send(f'J\'ai choisi **{myAnswer}**\nTu as gagné !')
         return
     
+    @commands.command()
+    async def bataille(self,ctx):
+        def check(message):
+            return message.channel == ctx.message.channel and message.content.lower() == 'moi'
+        def checkPrivate(message):
+            return (message.author == msgJoueur1.author or message.author == msgJoueur2.author) and len(message.content.split(':')) == 2
+        def checkPrivateJ1(message):
+            return message.author == msgJoueur1.author and len(message.content.split(':')) == 2
+        def checkPrivateJ2(message):
+            return message.author == msgJoueur2.author and len(message.content.split(':')) == 2
+        privateJ1 = self.createGrille()
+        privateJ2 = self.createGrille()
+        #publicJ1 = self.createGrille()
+        #publicJ2 = self.createGrille()
+        
+        await ctx.send('Jouons tous ensemble à un petit jeux !\nLes 2 prochaine perssonnes a dire "moi" seront les 2 joueurs\nPreparez vous !')
+        try :
+            msgJoueur1 = await self.bot.wait_for('message', check=check, timeout=60)
+            await ctx.send(f'**joueur 1** : {msgJoueur1.author.mention}')
+        except :
+            await ctx.send('Trop long !')
+            return
+        try :
+            msgJoueur2 = await self.bot.wait_for('message', check=check, timeout=60)
+            await ctx.send(f'**joueur 2** : {msgJoueur2.author.mention}')
+        except :
+            await ctx.send('Trop long !')
+            return
+        '''
+        if msgJoueur1.author == msgJoueur2.author:
+            await ctx.send('Les **2 joueurs** sont identiques !\nTa crue tu allais m\'avoir ?\n***Jeux annulé!!***')
+            return
+        '''
+        await msgJoueur1.author.send(self.afficherGrille(privateJ1))
+        await msgJoueur1.author.send("Tu doit repondre avec une coordonnée (ex : A:1)")
+        #await msgJoueur2.author.send(self.afficherGrille(privateJ2))
+        #await msgJoueur2.author.send("Tu doit repondre avec une coordonnée (ex : A:1)")
+        N=0
+        while N<:
+            try :
+                coordonate = await self.bot.wait_for('message', check=checkPrivate, timeout=60)
+                if coordonate.author == msgJoueur1.author:
+                    reponseJ1 = coordonate.content.lower()
+                    reponseJ2 = await self.bot.wait_for('message', check=checkPrivateJ2, timeout=10)
+                    reponseJ2 = reponseJ2.content.lower()
+                else:
+                    reponseJ2 = coordonate.content.lower()
+                    reponseJ1 = await self.bot.wait_for('message', check=checkPrivateJ1, timeout=10)
+                    reponseJ1 = reponseJ1.content.lower()
+            except:
+                await msgJoueur1.author.send('Trop long !')
+                await msgJoueur2.author.send('Trop long !')
+            N+=1
+        
+        
+        return
+        
 '''    
 with open('Achanger', 'r', encoding='latin2') as file:
     word=file.readlines()
