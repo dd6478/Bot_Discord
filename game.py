@@ -37,6 +37,19 @@ class gameBot(commands.Cog):
             grille.append(['*']*5)
         return grille
     
+    def addBoat(self, G, Coo):
+        dico = {'a':0, 'b':1, 'c':2, 'd':3, 'e':4}
+        Coo = Coo.split(':')
+        try :
+            Befor = G[int(Coo[1])-1][dico[Coo[0]]]
+            if Befor == '*':
+                G[int(Coo[1])-1][dico[Coo[0]]] = '+'
+            elif Befor == '+':
+                raise Exception('Boat already there')
+        except KeyError and IndexError:
+            raise ValueError('Coordinate not valid') 
+        return G
+    
     def afficherGrille(self, G):
         str='```\n\ A B C D E /\n'
         N=1 
@@ -130,11 +143,11 @@ class gameBot(commands.Cog):
         def check(message):
             return message.channel == ctx.message.channel and message.content.lower() == 'moi'
         def checkPrivate(message):
-            return (message.author == msgJoueur1.author or message.author == msgJoueur2.author) and len(message.content.split(':')) == 2
+            return checkPrivateJ1(message) and checkPrivateJ2(message) 
         def checkPrivateJ1(message):
-            return message.author == msgJoueur1.author and len(message.content.split(':')) == 2
+            return message.author == msgJoueur1.author
         def checkPrivateJ2(message):
-            return message.author == msgJoueur2.author and len(message.content.split(':')) == 2
+            return message.author == msgJoueur2.author
         privateJ1 = self.createGrille()
         privateJ2 = self.createGrille()
         #publicJ1 = self.createGrille()
@@ -144,10 +157,6 @@ class gameBot(commands.Cog):
         try :
             msgJoueur1 = await self.bot.wait_for('message', check=check, timeout=60)
             await ctx.send(f'**joueur 1** : {msgJoueur1.author.mention}')
-        except :
-            await ctx.send('Trop long !')
-            return
-        try :
             msgJoueur2 = await self.bot.wait_for('message', check=check, timeout=60)
             await ctx.send(f'**joueur 2** : {msgJoueur2.author.mention}')
         except :
@@ -159,27 +168,61 @@ class gameBot(commands.Cog):
             return
         '''
         await msgJoueur1.author.send(self.afficherGrille(privateJ1))
-        await msgJoueur1.author.send("Tu doit repondre avec une coordonnée (ex : A:1)")
         #await msgJoueur2.author.send(self.afficherGrille(privateJ2))
-        #await msgJoueur2.author.send("Tu doit repondre avec une coordonnée (ex : A:1)")
         N=0
-        while N<:
+        while N!=3:
+            if N==0:
+                await msgJoueur1.author.send('Le bateaux a placé a une taille de 2/1\nChoisi 2 case cote a cote (ex : A:1,A:2)')
+                #await msgJoueur2.author.send('Le bateaux a placé a une taille de 2/1\nChoisi 2 case cote a cote (ex : A:1,A:2)')
+            else:
+                await msgJoueur1.author.send('Le bateaux a placé a une taille de 1/1\nChoisi 1 case (ex : A:1)')
+                #await msgJoueur2.author.send('Le bateaux a placé a une taille de 1/1\nChoisi 1 case (ex : A:1)')
             try :
                 coordonate = await self.bot.wait_for('message', check=checkPrivate, timeout=60)
                 if coordonate.author == msgJoueur1.author:
                     reponseJ1 = coordonate.content.lower()
-                    reponseJ2 = await self.bot.wait_for('message', check=checkPrivateJ2, timeout=10)
+                    reponseJ2 = await self.bot.wait_for('message', check=checkPrivateJ2, timeout=60)
                     reponseJ2 = reponseJ2.content.lower()
                 else:
                     reponseJ2 = coordonate.content.lower()
-                    reponseJ1 = await self.bot.wait_for('message', check=checkPrivateJ1, timeout=10)
+                    reponseJ1 = await self.bot.wait_for('message', check=checkPrivateJ1, timeout=60)
                     reponseJ1 = reponseJ1.content.lower()
             except:
                 await msgJoueur1.author.send('Trop long !')
-                await msgJoueur2.author.send('Trop long !')
-            N+=1
-        
-        
+                #await msgJoueur2.author.send('Trop long !')
+                return
+            if N==0:
+                reponseJ1 = reponseJ1.split(',')
+                reponseJ2 = reponseJ2.split(',')
+                try:
+                    if (reponseJ1[0].split(':')[0] == reponseJ1[1].split(':')[0] or reponseJ1[0].split(':')[1] == reponseJ1[1].split(':')[1]):
+                        if (reponseJ2[0].split(':')[0] == reponseJ2[1].split(':')[0] or reponseJ2[0].split(':')[1] == reponseJ2[1].split(':')[1]):
+                                privateJ1 = self.addBoat(privateJ1,reponseJ1[0])
+                                privateJ1 = self.addBoat(privateJ1,reponseJ1[1])
+                                privateJ2 = self.addBoat(privateJ2,reponseJ2[0])
+                                privateJ2 = self.addBoat(privateJ2,reponseJ2[1])
+                        else :
+                            await msgJoueur1.author.send(f'**ERROR** : {msgJoueur2.author.name} a mal placé son bateau\nOn recommence\n\n')
+                            #await msgJoueur2.author.send(f'**ERROR** : {msgJoueur2.author.name} a mal placé son bateau\nOn recommence\n\n')
+                    else :
+                        await msgJoueur1.author.send(f'**ERROR** : {msgJoueur1.author.name} a mal placé son bateau\nOn recommence\n\n')
+                        #await msgJoueur2.author.send(f'**ERROR** : {msgJoueur1.author.name} a mal placé son bateau\nOn recommence\n\n')
+                except IndexError:
+                    await msgJoueur1.author.send('**ERROR** : l\'un d\'entre vous n\'as pas mis 2 coordonée !!\nOn recommence\n\n')
+                    await msgJoueur2.author.send('**ERROR** : l\'un d\'entre vous n\'as pas mis 2 coordonée !!\nOn recommence\n\n')
+                except ValueError:
+                    await msgJoueur1.author.send('**ERROR** : Mauvaise coordonnée !!\nOn recommence\n\n')
+                    await msgJoueur2.author.send('**ERROR** : Mauvaise coordonnée !!\nOn recommence\n\n')
+                except Exception:
+                    await msgJoueur1.author.send('**ERROR** : Bateau mis sur un autre par l\'un d\'entre vouus !!\nOn recommence\n\n')
+                    await msgJoueur2.author.send('**ERROR** : Bateau mis sur un autre par l\'un d\'entre vouus !!\nOn recommence\n\n')
+                else:
+                    await msgJoueur1.author.send(self.afficherGrille(privateJ1))
+                    await msgJoueur2.author.send(self.afficherGrille(privateJ2))
+                    N+=1
+            else:
+                pass
+                    
         return
         
 '''    
