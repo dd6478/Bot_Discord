@@ -24,12 +24,12 @@ class theCommands(commands.Cog):
     **\*flip** : flip a coin
     **\*love** : show the love between 2 people :3 (use *\*love help* for more information)
     **\*mercimek** : for say thanks to a person 
-    **\*cat or \*dog** : show a random picture of a cat or dog
+    **\*cat , \*dog or \*rabbit** : show a random picture of a cat, dog or rabbit  
 
 **GAME** :
     **\*pendu** : play a game of pendu
     **\*pfc** : it's Rock-Paper-Scissors game (use *\*pfc help* for more information)
-    **\*bataille* : play to the battleship game (for 2 players)
+    **\*bataille** : play to the battleship game (for 2 players)
 
 ***Save file***
     **\*create** : create a new save file
@@ -102,6 +102,14 @@ class theCommands(commands.Cog):
             await ctx.channel.send(data['url'])
         except:
             await ctx.channel.send("Une erreur est survenue")
+            
+    @commands.command()
+    async def rabbit(self,ctx):
+        embed = discord.Embed(title="Rabbit", color=0x00ff00) #creates embed
+        file = discord.File(f'rabbit/rabbit-{random.randint(1,69)}', filename="image.png")
+        embed.set_image(url="attachment://image.png")
+        await ctx.send(file=file, embed=embed)
+        #await ctx.send(file=discord.File(f'rabbit/rabbit-{random.randint(1,69)}'))
 
 
 '''

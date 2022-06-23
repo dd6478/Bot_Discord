@@ -6,7 +6,7 @@
 * **\*flip** : flip a coin  
 * **\*love** : show the love between 2 people :3 (use *\*love help* for more information)  
 * **\*mercimek** : for say thanks to a person  
-* **\*cat or \*dog** : show a random picture of a cat or dog  
+* **\*cat , \*dog or \*rabbit** : show a random picture of a cat, dog or rabbit  
 * **\*wakeup** : wake up your computer with WakeOnWan
 
 ## **GAME**
