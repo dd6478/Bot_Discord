@@ -5,8 +5,10 @@
         #####dd64#####
          ############ 
          
+import os
 import discord, random, asyncio
 from discord.ext import commands
+from copy import deepcopy
 
 def setup(bot):
     bot.add_cog(gameBot(bot))
@@ -30,38 +32,6 @@ class gameBot(commands.Cog):
             else:
                 str+='- '
         return str
-    
-    def createGrille(self):
-        grille=[]
-        for i in range(5):
-            grille.append(['*']*5)
-        return grille
-    
-    def addBoat(self, G, Coo):
-        dico = {'a':0, 'b':1, 'c':2, 'd':3, 'e':4}
-        Coo = Coo.split(':')
-        try :
-            Befor = G[int(Coo[1])-1][dico[Coo[0]]]
-            if Befor == '*':
-                G[int(Coo[1])-1][dico[Coo[0]]] = '+'
-            elif Befor == '+':
-                raise Exception('Boat already there')
-        except KeyError and IndexError:
-            raise ValueError('Coordinate not valid') 
-        return G
-    
-    def afficherGrille(self, G):
-        str='```\n\ A B C D E /\n'
-        N=1 
-        for i in G:
-            str+=f'{N} '
-            for j in i:
-                str+=f'{j} '
-            str+=f'{N}\n'
-            N+=1
-        str+='/ A B C D E \ \n```'
-        return str
-        
                 
     @commands.command()
     async def pendu(self,ctx):
@@ -103,6 +73,8 @@ class gameBot(commands.Cog):
         await ctx.send(f"Vous n'avez plus de vies :(\nLe mot à trouver était : {WORD}")
         return
     
+    
+    
     @commands.command()
     async def pfc(self,ctx):
         def check(message):
@@ -138,20 +110,93 @@ class gameBot(commands.Cog):
                 await ctx.send(f'J\'ai choisi **{myAnswer}**\nTu as gagné !')
         return
     
+    
+    
+    def createGrille(self):
+        grille=[]
+        for i in range(5):
+            grille.append(['~']*5)
+        return grille
+    
+    def addBoat(self, G, Coo):
+        dico = {'a':0, 'b':1, 'c':2, 'd':3, 'e':4}
+        Coo = Coo.split(':')
+        try :
+            Befor = G[int(Coo[1])-1][dico[Coo[0]]]
+            if Befor == '~':
+                G[int(Coo[1])-1][dico[Coo[0]]] = '+'
+            elif Befor == '+':
+                raise KeyError
+        except KeyError and IndexError:
+            raise ValueError('Coordinate not valid') 
+        return G
+    
+    def addMine(self, G, Coo):
+        dico = {'a':0, 'b':1, 'c':2, 'd':3, 'e':4}
+        Coo = Coo.split(':')
+        try :
+            Befor = G[int(Coo[1])-1][dico[Coo[0]]]
+            if Befor == '~':
+                G[int(Coo[1])-1][dico[Coo[0]]] = '*'
+            elif Befor == '+':
+                G[int(Coo[1])-1][dico[Coo[0]]] = 'X'
+            elif Befor == '*' or Befor == 'X':
+                raise OSError('Mine already there')
+        except KeyError and IndexError:
+            raise ValueError('Coordinate not valid') 
+        return G
+    
+    def afficherGrille(self, G):
+        str='```\n\ A B C D E /\n'
+        N=1 
+        for i in G:
+            str+=f'{N} '
+            for j in i:
+                str+=f'{j} '
+            str+=f'{N}\n'
+            N+=1
+        str+='/ A B C D E \ \n```'
+        return str
+        
+    def afficherGrillePublic(self, Player1, G1, Player2, G2):
+        Str='```\n###############\n#\ A B C D E /#\n'
+        N=1 
+        for i in G1:
+            Str+=f'#{N} '
+            for j in i:
+                Str+=f'{j} '
+            if N==3:
+                Str+=f'{N}# <=={Player1}\n'
+            else:
+                Str+=f'{N}#\n'
+            N+=1
+        Str+='#/ A B C D E \#\n###############\n#\ A B C D E /#\n'
+        N=1 
+        for i in G2:
+            Str+=f'#{N} '
+            for j in i:
+                Str+=f'{j} '
+            if N==3:
+                Str+=f'{N}# <=={Player2}\n'
+            else:
+                Str+=f'{N}#\n'
+            N+=1
+        Str+='#/ A B C D E \#\n###############\n```'
+        return Str
+    
     @commands.command()
     async def bataille(self,ctx):
         def check(message):
             return message.channel == ctx.message.channel and message.content.lower() == 'moi'
         def checkPrivate(message):
-            return checkPrivateJ1(message) and checkPrivateJ2(message) 
+            return checkPrivateJ1(message) or checkPrivateJ2(message) 
         def checkPrivateJ1(message):
             return message.author == msgJoueur1.author
         def checkPrivateJ2(message):
             return message.author == msgJoueur2.author
+        
         privateJ1 = self.createGrille()
         privateJ2 = self.createGrille()
-        #publicJ1 = self.createGrille()
-        #publicJ2 = self.createGrille()
         
         await ctx.send('Jouons tous ensemble à un petit jeux !\nLes 2 prochaine perssonnes a dire "moi" seront les 2 joueurs\nPreparez vous !')
         try :
@@ -168,61 +213,95 @@ class gameBot(commands.Cog):
             return
         '''
         await msgJoueur1.author.send(self.afficherGrille(privateJ1))
-        #await msgJoueur2.author.send(self.afficherGrille(privateJ2))
-        N=0
-        while N!=3:
-            if N==0:
-                await msgJoueur1.author.send('Le bateaux a placé a une taille de 2/1\nChoisi 2 case cote a cote (ex : A:1,A:2)')
-                #await msgJoueur2.author.send('Le bateaux a placé a une taille de 2/1\nChoisi 2 case cote a cote (ex : A:1,A:2)')
+        await msgJoueur2.author.send(self.afficherGrille(privateJ2))
+        N=1
+        while N!=4:
+            print(N)
+            if N==1:
+                await msgJoueur1.author.send(f'Le bateaux N°{N} a placé a une taille de **2/1**\nChoisi 2 case cote a cote (*ex : A:1,A:2*)')
+                await msgJoueur2.author.send(f'Le bateaux N°{N} a placé a une taille de **2/1**\nChoisi 2 case cote a cote (*ex : A:1,A:2*)')
             else:
-                await msgJoueur1.author.send('Le bateaux a placé a une taille de 1/1\nChoisi 1 case (ex : A:1)')
-                #await msgJoueur2.author.send('Le bateaux a placé a une taille de 1/1\nChoisi 1 case (ex : A:1)')
+                await msgJoueur1.author.send(f'\n\nOk maintenant\nLe bateaux N°{N} a placé a une taille de **1/1**\nChoisi 1 case (*ex : A:1*)')
+                await msgJoueur2.author.send(f'\n\nOk maintenant\nLe bateaux N°{N} a placé a une taille de **1/1**\nChoisi 1 case (*ex : A:1*)')
             try :
                 coordonate = await self.bot.wait_for('message', check=checkPrivate, timeout=60)
                 if coordonate.author == msgJoueur1.author:
+                    print("jsuis ici")
                     reponseJ1 = coordonate.content.lower()
                     reponseJ2 = await self.bot.wait_for('message', check=checkPrivateJ2, timeout=60)
                     reponseJ2 = reponseJ2.content.lower()
-                else:
+                elif coordonate.author == msgJoueur2.author:
+                    print("jsuis la")
                     reponseJ2 = coordonate.content.lower()
                     reponseJ1 = await self.bot.wait_for('message', check=checkPrivateJ1, timeout=60)
                     reponseJ1 = reponseJ1.content.lower()
             except:
                 await msgJoueur1.author.send('Trop long !')
-                #await msgJoueur2.author.send('Trop long !')
+                await msgJoueur2.author.send('Trop long !')
                 return
-            if N==0:
+            if N==1:
                 reponseJ1 = reponseJ1.split(',')
                 reponseJ2 = reponseJ2.split(',')
                 try:
                     if (reponseJ1[0].split(':')[0] == reponseJ1[1].split(':')[0] or reponseJ1[0].split(':')[1] == reponseJ1[1].split(':')[1]):
                         if (reponseJ2[0].split(':')[0] == reponseJ2[1].split(':')[0] or reponseJ2[0].split(':')[1] == reponseJ2[1].split(':')[1]):
-                                privateJ1 = self.addBoat(privateJ1,reponseJ1[0])
-                                privateJ1 = self.addBoat(privateJ1,reponseJ1[1])
-                                privateJ2 = self.addBoat(privateJ2,reponseJ2[0])
-                                privateJ2 = self.addBoat(privateJ2,reponseJ2[1])
+                            A=deepcopy(privateJ1)
+                            B=deepcopy(privateJ2)
+                            self.addBoat(A,reponseJ1[0])
+                            self.addBoat(A,reponseJ1[1])
+                            self.addBoat(B,reponseJ2[0])
+                            self.addBoat(B,reponseJ2[1])
                         else :
                             await msgJoueur1.author.send(f'**ERROR** : {msgJoueur2.author.name} a mal placé son bateau\nOn recommence\n\n')
-                            #await msgJoueur2.author.send(f'**ERROR** : {msgJoueur2.author.name} a mal placé son bateau\nOn recommence\n\n')
+                            await msgJoueur2.author.send(f'**ERROR** : {msgJoueur2.author.name} a mal placé son bateau\nOn recommence\n\n')
+                            raise ValueError('ERROR')
                     else :
                         await msgJoueur1.author.send(f'**ERROR** : {msgJoueur1.author.name} a mal placé son bateau\nOn recommence\n\n')
-                        #await msgJoueur2.author.send(f'**ERROR** : {msgJoueur1.author.name} a mal placé son bateau\nOn recommence\n\n')
-                except IndexError:
-                    await msgJoueur1.author.send('**ERROR** : l\'un d\'entre vous n\'as pas mis 2 coordonée !!\nOn recommence\n\n')
-                    await msgJoueur2.author.send('**ERROR** : l\'un d\'entre vous n\'as pas mis 2 coordonée !!\nOn recommence\n\n')
+                        await msgJoueur2.author.send(f'**ERROR** : {msgJoueur1.author.name} a mal placé son bateau\nOn recommence\n\n')
+                        raise ValueError('ERROR')
                 except ValueError:
+                    pass
+                except:
                     await msgJoueur1.author.send('**ERROR** : Mauvaise coordonnée !!\nOn recommence\n\n')
                     await msgJoueur2.author.send('**ERROR** : Mauvaise coordonnée !!\nOn recommence\n\n')
-                except Exception:
-                    await msgJoueur1.author.send('**ERROR** : Bateau mis sur un autre par l\'un d\'entre vouus !!\nOn recommence\n\n')
-                    await msgJoueur2.author.send('**ERROR** : Bateau mis sur un autre par l\'un d\'entre vouus !!\nOn recommence\n\n')
+                    
                 else:
+                    print(privateJ1)
+                    self.addBoat(privateJ1,reponseJ1[0])
+                    self.addBoat(privateJ1,reponseJ1[1])
+                    self.addBoat(privateJ2,reponseJ2[0])
+                    self.addBoat(privateJ2,reponseJ2[1])
                     await msgJoueur1.author.send(self.afficherGrille(privateJ1))
                     await msgJoueur2.author.send(self.afficherGrille(privateJ2))
                     N+=1
+                finally :
+                    del(A)
+                    del(B)
             else:
-                pass
-                    
+                try:
+                    A=deepcopy(privateJ1)
+                    B=deepcopy(privateJ2)
+                    self.addBoat(A,reponseJ1)
+                    self.addBoat(B,reponseJ2)
+                except:
+                    await msgJoueur1.author.send('**ERROR** : Mauvaise coordonnée !!\nOn recommence\n\n')
+                    await msgJoueur2.author.send('**ERROR** : Mauvaise coordonnée !!\nOn recommence\n\n')
+                else:
+                    self.addBoat(privateJ1,reponseJ1)
+                    self.addBoat(privateJ2,reponseJ2)
+                    await msgJoueur1.author.send(self.afficherGrille(privateJ1))
+                    await msgJoueur2.author.send(self.afficherGrille(privateJ2))
+                    N+=1
+                finally:
+                    del(A)
+                    del(B)
+        await msgJoueur1.author.send('Ok les bateaux sont placés')
+        await msgJoueur2.author.send('Ok les bateaux sont placés')
+        await ctx.send('Les bateaux des deux joueurs sont placés\n\n')
+        GrillePb = self.afficherGrillePublic(msgJoueur1.author.name,privateJ1,msgJoueur2.author.name,privateJ2)
+        GrillePb = GrillePb.replace('+','~')
+        await ctx.send(GrillePb)
+    
         return
         
 '''    
