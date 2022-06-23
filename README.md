@@ -12,7 +12,8 @@
 ## **GAME**
 
 * **\*pendu** : play a game of pendu  
-* **\*pfc** : it's Rock-Paper-Scissors game (use *\*pfc help* for more information)  
+* **\*pfc** : it's Rock-Paper-Scissors game (use *\*pfc help* for more information)
+* **\*bataille** : play to the battleship game (for 2 players)
 
 ## ***Save file***
 

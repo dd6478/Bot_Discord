@@ -141,7 +141,7 @@ class gameBot(commands.Cog):
             elif Befor == '+':
                 G[int(Coo[1])-1][dico[Coo[0]]] = 'X'
             elif Befor == '*' or Befor == 'X':
-                raise OSError('Mine already there')
+                raise KeyError
         except KeyError and IndexError:
             raise ValueError('Coordinate not valid') 
         return G
@@ -274,9 +274,7 @@ class gameBot(commands.Cog):
                     await msgJoueur1.author.send(self.afficherGrille(privateJ1))
                     await msgJoueur2.author.send(self.afficherGrille(privateJ2))
                     N+=1
-                finally :
-                    del(A)
-                    del(B)
+
             else:
                 try:
                     A=deepcopy(privateJ1)
@@ -292,16 +290,65 @@ class gameBot(commands.Cog):
                     await msgJoueur1.author.send(self.afficherGrille(privateJ1))
                     await msgJoueur2.author.send(self.afficherGrille(privateJ2))
                     N+=1
-                finally:
-                    del(A)
-                    del(B)
+
         await msgJoueur1.author.send('Ok les bateaux sont placés')
         await msgJoueur2.author.send('Ok les bateaux sont placés')
         await ctx.send('Les bateaux des deux joueurs sont placés\n\n')
         GrillePb = self.afficherGrillePublic(msgJoueur1.author.name,privateJ1,msgJoueur2.author.name,privateJ2)
         GrillePb = GrillePb.replace('+','~')
         await ctx.send(GrillePb)
-    
+        N=1
+        while True:
+            await msgJoueur1.author.send('\n\nChoisi une case (*ex : A:1*)\nFait exploser les bateaux')
+            await msgJoueur2.author.send('\n\nChoisi une case (*ex : A:1*)\nFait exploser les bateaux')
+            try :
+                coordonate = await self.bot.wait_for('message', check=checkPrivate, timeout=60)
+                if coordonate.author == msgJoueur1.author:
+                    print("jsuis ici")
+                    reponseJ1 = coordonate.content.lower()
+                    reponseJ2 = await self.bot.wait_for('message', check=checkPrivateJ2, timeout=60)
+                    reponseJ2 = reponseJ2.content.lower()
+                elif coordonate.author == msgJoueur2.author:
+                    print("jsuis la")
+                    reponseJ2 = coordonate.content.lower()
+                    reponseJ1 = await self.bot.wait_for('message', check=checkPrivateJ1, timeout=60)
+                    reponseJ1 = reponseJ1.content.lower()
+            except:
+                await msgJoueur1.author.send('Trop long !')
+                await msgJoueur2.author.send('Trop long !')
+                return
+            
+            try:
+                A=deepcopy(privateJ1)
+                B=deepcopy(privateJ2)
+                self.addMine(A,reponseJ2)
+                self.addMine(B,reponseJ1)
+            except:
+                await msgJoueur1.author.send('**ERROR** : Mauvaise coordonnée !!\nOn recommence\n\n')
+                await msgJoueur2.author.send('**ERROR** : Mauvaise coordonnée !!\nOn recommence\n\n')
+            else:
+                self.addMine(privateJ1,reponseJ2)
+                self.addMine(privateJ2,reponseJ1)
+                await msgJoueur1.author.send(f'Ta grille\n{self.afficherGrille(privateJ1)}\nTon ennemi\n{(self.afficherGrille(privateJ2)).replace("+","~")}')
+                await msgJoueur2.author.send(f'Ta grille\n{self.afficherGrille(privateJ2)}\nTon ennemi\n{(self.afficherGrille(privateJ1)).replace("+","~")}')
+                GrillePb = self.afficherGrillePublic(msgJoueur1.author.name,privateJ1,msgJoueur2.author.name,privateJ2)
+                if '+' not in self.afficherGrille(privateJ1):
+                    await msgJoueur2.author.send('**VICTOIRE** tu a gagné')
+                    await msgJoueur1.author.send('**DEFAITE** tu as perdu')
+                    await ctx.send(GrillePb)
+                    await ctx.send(f'**{msgJoueur2.author.name} a gagné**\n')
+                    break
+                elif '+' not in self.afficherGrille(privateJ2):
+                    await msgJoueur1.author.send('**VICTOIRE** tu a gagné')
+                    await msgJoueur2.author.send('**DEFAITE** tu as perdu')
+                    await ctx.send(GrillePb)
+                    await ctx.send(f'**{msgJoueur1.author.name} a gagné**\n')
+                    break
+                else:
+                    GrillePb = GrillePb.replace('+','~')
+                    await ctx.send(f'Tour N°{N}\n{GrillePb}')
+                N+=1
+
         return
         
 '''    

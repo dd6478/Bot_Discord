@@ -29,6 +29,7 @@ class theCommands(commands.Cog):
 **GAME** :
     **\*pendu** : play a game of pendu
     **\*pfc** : it's Rock-Paper-Scissors game (use *\*pfc help* for more information)
+    **\*bataille* : play to the battleship game (for 2 players)
 
 ***Save file***
     **\*create** : create a new save file
