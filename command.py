@@ -5,6 +5,7 @@
         #####dd64#####
          ############ 
 
+from pydoc import describe
 import discord, random, asyncio
 from discord.ext import commands
 import requests
@@ -24,6 +25,7 @@ class theCommands(commands.Cog):
     **\*flip** : flip a coin
     **\*love** : show the love between 2 people :3 (use *\*love help* for more information)
     **\*mercimek** : for say thanks to a person 
+    **\*hehehehaw** : hehehehaw
     **\*cat , \*dog or \*rabbit** : show a random picture of a cat, dog or rabbit  
 
 **GAME** :
@@ -44,7 +46,7 @@ class theCommands(commands.Cog):
     async def flip(self, ctx):
         pos=["Face","Pile"]
         myAnswer=random.randint(0, 1)
-        await ctx.channel.send('Ok I flip the coin')
+        await ctx.channel.send('Ok je lance la piece !!')
         await asyncio.sleep(2)
         await ctx.channel.send('WOW elle est longue a retomber ...')
         await asyncio.sleep(1)
@@ -95,21 +97,22 @@ class theCommands(commands.Cog):
         
     @commands.command()
     async def dog(self,ctx):
+        #embed = discord.Embed(title="Dog", description="Here is a random dog", color=0x06F7E9)
         try:
             url = 'https://random.dog/woof.json'
             r = requests.get(url)
             data = r.json()
-            await ctx.channel.send(data['url'])
+        #    embed.set_image(url=data['url'])
+            await ctx.send(data['url'])
         except:
             await ctx.channel.send("Une erreur est survenue")
             
     @commands.command()
     async def rabbit(self,ctx):
-        embed = discord.Embed(title="Rabbit", color=0x00ff00) #creates embed
+        embed = discord.Embed(title="Rabbit", description='Here is a random rabbit', color=0x00ff00) #creates embed
         file = discord.File(f'rabbit/rabbit-{random.randint(1,69)}', filename="image.png")
         embed.set_image(url="attachment://image.png")
         await ctx.send(file=file, embed=embed)
-        #await ctx.send(file=discord.File(f'rabbit/rabbit-{random.randint(1,69)}'))
 
 
 '''
