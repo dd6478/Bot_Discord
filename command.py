@@ -5,6 +5,8 @@
         #####dd64#####
          ############ 
 
+from calendar import c
+from email import message
 from fnmatch import translate
 from pydoc import describe
 import discord, random, asyncio
@@ -21,8 +23,9 @@ class theCommands(commands.Cog):
     @commands.command()
     async def help(self, ctx):
         await ctx.channel.send('''
-**Commands** :        
+**Commands** :
     **\*help** : show this message lol
+    **\*trad** : translate a word or a sentence
     **\*flip** : flip a coin
     **\*love** : show the love between 2 people :3 (use *\*love help* for more information)
     **\*mercimek** : for say thanks to a person 
@@ -117,10 +120,48 @@ class theCommands(commands.Cog):
 
     @commands.command()
     async def trad(self, ctx):
-        with open('DeeplAPI.txt', 'r') as file:
+        def check(m):
+            return m.author == ctx.author and m.channel == ctx.channel
+        
+        def checkEmoji(reaction, user):
+            return ctx.message.author == user and message.id == reaction.message.id and (str(reaction.emoji) == "🇫🇷" or str(reaction.emoji) == "🇬🇧" or str(reaction.emoji) == "🇺🇸" or str(reaction.emoji) == "🇪🇸" or str(reaction.emoji) == "🇯🇵" or str(reaction.emoji) == "🇷🇺" )
+        
+        with open('DeeplAPI', 'r') as file:
             auth_key = file.read().strip()
+            file.close()
         Deepl = deepl.Translator(auth_key)
-        await ctx.send(Deepl.translate_text(ctx.message.content[5:], target_lang='EN-GB').text)
+        await ctx.send("Veuillez entrer votre texte et cliqué sur la langue désirée")
+        try:
+            message = await self.bot.wait_for('message', check=check, timeout=60)
+            await message.add_reaction('🇫🇷')
+            await message.add_reaction('🇺🇸')
+            await message.add_reaction('🇬🇧')
+            await message.add_reaction('🇪🇸')
+            await message.add_reaction('🇯🇵')
+            await message.add_reaction('🇷🇺')
+            await asyncio.sleep(0.5)
+            reaction, user = await self.bot.wait_for('reaction_add', timeout=60, check=checkEmoji)
+        except:
+            await ctx.send("**ERROR** : Timeout")
+        else:
+            if reaction.emoji == "🇫🇷":
+                language = 'FR'
+            elif str(reaction.emoji) == "🇺🇸":
+                language = 'EN-US'
+            elif str(reaction.emoji) == "🇬🇧":
+                language = 'EN-GB'
+            elif str(reaction.emoji) == "🇪🇸":
+                language = 'ES'
+            elif str(reaction.emoji) == "🇯🇵":
+                language = 'JA'
+            elif str(reaction.emoji) == "🇷🇺":
+                language = 'RU'
+            else:
+                print(reaction.emoji)
+            trad = Deepl.translate_text(message.content, target_lang=language)
+            await ctx.send(f'Langue de depart : {trad.detected_source_lang}\nLangue désirée : {language}\n\n{trad.text}')
+            
+
 '''
 @bot.command(name='send')
 async def _send(ctx,*,message):

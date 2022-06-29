@@ -2,7 +2,8 @@
 
 ## **Commands**
 
-* **\*help** : show this message lol  
+* **\*help** : show this message lol
+* **\*trad** : translate a word or a sentence
 * **\*flip** : flip a coin  
 * **\*love** : show the love between 2 people :3 (use *\*love help* for more information)  
 * **\*mercimek** : for say thanks to a person  
