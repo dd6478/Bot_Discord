@@ -5,10 +5,11 @@
         #####dd64#####
          ############ 
 
+from fnmatch import translate
 from pydoc import describe
 import discord, random, asyncio
 from discord.ext import commands
-import requests
+import requests, deepl
 
 def setup(bot):
     bot.add_cog(theCommands(bot))
@@ -114,7 +115,12 @@ class theCommands(commands.Cog):
         embed.set_image(url="attachment://image.png")
         await ctx.send(file=file, embed=embed)
 
-
+    @commands.command()
+    async def trad(self, ctx):
+        with open('DeeplAPI.txt', 'r') as file:
+            auth_key = file.read().strip()
+        Deepl = deepl.Translator(auth_key)
+        await ctx.send(Deepl.translate_text(ctx.message.content[5:], target_lang='EN-GB').text)
 '''
 @bot.command(name='send')
 async def _send(ctx,*,message):
