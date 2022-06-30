@@ -61,7 +61,7 @@ if a people are lost with the command said the '*help' command can help them :
                 answer = reponse.choices[0].text.strip()
                 chat += answer
                 await ctx.send(f"{answer}\n")
-        with open(f'{message.author.name}.dodoBot', 'a') as file:
+        with open(f'Player/{message.author.name}.dodoBot', 'a') as file:
             file.write(chat)
             file.write('\n\n####################\n####################\n####################\n\n')
             file.close()
