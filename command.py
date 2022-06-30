@@ -30,7 +30,9 @@ class theCommands(commands.Cog):
     **\*love** : show the love between 2 people :3 (use *\*love help* for more information)
     **\*mercimek** : for say thanks to a person 
     **\*hehehehaw** : hehehehaw
-    **\*cat , \*dog or \*rabbit** : show a random picture of a cat, dog or rabbit  
+    **\*cat , \*dog or \*rabbit** : show a random picture of a cat, dog or rabbit
+    **\*wakeup** : wake up your computer with WakeOnWan
+    **\*talk** : talk with the bot
 
 **GAME** :
     **\*pendu** : play a game of pendu

@@ -1,4 +1,4 @@
-# Bot Discord **V2**
+# Bot Discord **V3**
 
 ## **Commands**
 
@@ -9,6 +9,7 @@
 * **\*mercimek** : for say thanks to a person  
 * **\*cat , \*dog or \*rabbit** : show a random picture of a cat, dog or rabbit  
 * **\*wakeup** : wake up your computer with WakeOnWan
+* **\*talk** : talk with the bot
 
 ## **GAME**
 
@@ -16,7 +17,7 @@
 * **\*pfc** : it's Rock-Paper-Scissors game (use *\*pfc help* for more information)
 * **\*bataille** : play to the battleship game (for 2 players)
 
-## ***Save file***
+## **Save file**
 
 * **\*create** : create a new save file  
 * **\*add** : add a new saveLine in file  

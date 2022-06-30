@@ -30,6 +30,7 @@ async def on_ready():
     dodoBot.load_extension('save')
     dodoBot.load_extension('game')
     dodoBot.load_extension('wakeUp')
+    dodoBot.load_extension('AI')
 
         #################
 
